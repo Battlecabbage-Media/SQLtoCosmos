@@ -85,29 +85,6 @@ class cosmosClient:
             self._process.outputMessage(f"Created {container} Container", "success")
 
 
-# class cosmosClientSingle(cosmosClient):
-#     def __init__(self, process: processHelper):
-#         super().__init__()
-#         self.cosmos_container = os.getenv("COSMOS_CONTAINER_MEDIA_SINGLE")
-#         self._process = process
-        
-# class cosmosClientEmbedded(cosmosClient):
-#     def __init__(self):
-#         super().__init__()
-#         self.cosmos_container = os.getenv("COSMOS_CONTAINER_MEDIA_EMBEDDED")
-#         self._process = process
-
-# class cosmosClientReference(cosmosClient):
-#     def __init__(self):
-#         super().__init__()
-#         self.cosmos_container = os.getenv("COSMOS_CONTAINER_MEDIA_REFERENCE")
-
-# class cosmosClientHybrid(cosmosClient):
-#     def __init__(self):
-#         super().__init__()
-#         self.cosmos_container = os.getenv("COSMOS_CONTAINER_MEDIA_HYBRID")
-
-
 class lastDate:
     def __init__(self, cosmos_client, process: processHelper):
         self.date = datetime.date(1900, 1, 1)
@@ -184,16 +161,17 @@ class mediaBuilder:
     def close_connection(self):
         self.conn.close()
 
+
 process = processHelper()
-#os.environ.clear()
-        
+
+# Load environment variables      
 load_dotenv()
 
 # For command line arguments
 parser = argparse.ArgumentParser(description="Provide various run commands.")
 # Argument for verbose mode, to display object outputs
-parser.add_argument("-r","--rebuild", action='store_true', help="Rebuild Cosmos Database and Containers")
-parser.add_argument("-d","--setdate", help="Allows to set the last date rather than relying on the last date in Cosmos. Format: YYYY-MM-DD")
+parser.add_argument("-r","--rebuild", action='store_true', help="Rebuild Cosmos Containers")
+parser.add_argument("-d","--setdate", help="Allows to set the last date rather than relying on the last date in Cosmos. Format: 'YYYY-MM-DD'")
 args = parser.parse_args()
 
 if args.rebuild:
@@ -207,7 +185,7 @@ if args.rebuild:
         cosmos_client.CreateDatabaseContainers()
         process.outputMessage("Cosmos Modeling Containers Rebuilt","success")
     else:
-        exit(process.outputMessage("Cancelled","warning"))
+        exit(process.outputMessage("Rebuild and Excution Cancelled","warning"))
 
 
 # Spin up all my cosmos clients for different model containers
