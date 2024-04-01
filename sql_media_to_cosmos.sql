@@ -9,13 +9,13 @@ GO
 
 /*
 --Cleanup Existing Stored Procedures
-DROP PROCEDURE IF EXISTS [cosmos].[getMoviesJson];
-DROP PROCEDURE IF EXISTS [cosmos].[getActorsEmbeddedJson];
-DROP PROCEDURE IF EXISTS [cosmos].[getDirectorsEmbeddedJson];
-DROP PROCEDURE IF EXISTS [cosmos].[getActorsReferenceJson];
-DROP PROCEDURE IF EXISTS [cosmos].[getDirectorsReferenceJson];
-DROP PROCEDURE IF EXISTS [cosmos].[getActorsHybridJson];
-DROP PROCEDURE IF EXISTS [cosmos].[getDirectorsHybridJson];
+DROP PROCEDURE IF EXISTS [cosmos].[GetMoviesJson];
+DROP PROCEDURE IF EXISTS [cosmos].[GetActorsEmbeddedJson];
+DROP PROCEDURE IF EXISTS [cosmos].[GetDirectorsEmbeddedJson];
+DROP PROCEDURE IF EXISTS [cosmos].[GetActorsReferenceJson];
+DROP PROCEDURE IF EXISTS [cosmos].[GetDirectorsReferenceJson];
+DROP PROCEDURE IF EXISTS [cosmos].[GetActorsHybridJson];
+DROP PROCEDURE IF EXISTS [cosmos].[GetDirectorsHybridJson];
 DROP PROCEDURE IF EXISTS [cosmos].[GetNewMoviesActors];
 DROP PROCEDURE IF EXISTS [cosmos].[GetNewMoviesDirectors];
 */
@@ -24,7 +24,7 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE PROCEDURE [cosmos].[getMoviesJson]
+CREATE PROCEDURE [cosmos].[GetMoviesJson]
     @date datetime
 AS
 BEGIN
@@ -76,7 +76,7 @@ END
 GO
 
 
-CREATE PROCEDURE [cosmos].[getActorsEmbeddedJson]
+CREATE PROCEDURE [cosmos].[GetActorsEmbeddedJson]
     @date datetime
 AS
 BEGIN
@@ -132,7 +132,7 @@ END
 GO
 
 
-CREATE PROCEDURE [cosmos].[getDirectorsEmbeddedJson]
+CREATE PROCEDURE [cosmos].[GetDirectorsEmbeddedJson]
     @date datetime
 AS
 BEGIN
@@ -187,7 +187,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE [cosmos].[getActorsReferenceJson]
+CREATE PROCEDURE [cosmos].[GetActorsReferenceJson]
     @date datetime
 AS
 BEGIN
@@ -214,7 +214,7 @@ END
 GO
 
 
-CREATE PROCEDURE [cosmos].[getDirectorsReferenceJson]
+CREATE PROCEDURE [cosmos].[GetDirectorsReferenceJson]
     @date datetime
 AS
 BEGIN
@@ -241,7 +241,7 @@ END
 GO
 
 
-CREATE PROCEDURE [cosmos].[getActorsHybridJson]
+CREATE PROCEDURE [cosmos].[GetActorsHybridJson]
     @actor_id int
 AS
 BEGIN
@@ -273,7 +273,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE [cosmos].[getDirectorsHybridJson]
+CREATE PROCEDURE [cosmos].[GetDirectorsHybridJson]
     @director_id int
 AS
 BEGIN

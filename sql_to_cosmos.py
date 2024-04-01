@@ -75,14 +75,20 @@ class cosmosClient:
     def CleanDatabaseContainers(self):
         container_list = ['MediaSingle', 'MediaEmbedded', 'MediaReference', 'MediaHybrid']
         for container in container_list:
-            self.database.delete_container(container)
-            self._process.outputMessage(f"Deleted {container} Container", "success")
+            try:
+                self.database.delete_container(container)
+                self._process.outputMessage(f"Deleted {container} Container", "success")
+            except Exception as e:
+                self._process.outputMessage(f"Error: {e}", "error")
     
     def CreateDatabaseContainers(self):
         container_list = ['MediaSingle', 'MediaEmbedded', 'MediaReference', 'MediaHybrid']
         for container in container_list:
-            self.database.create_container(container, partition_key=PartitionKey(path="/title"))
-            self._process.outputMessage(f"Created {container} Container", "success")
+            try:
+                self.database.create_container(container, partition_key=PartitionKey(path="/title"))
+                self._process.outputMessage(f"Created {container} Container", "success")
+            except Exception as e:
+                self._process.outputMessage(f"Error: {e}", "error")
 
 
 class lastDate:
