@@ -72,8 +72,9 @@ class cosmosClient:
     def WriteToCosmos(self, movie):
         self.container.upsert_item(movie)
 
+    #TODO this needs to be a list of containers and not in the .env file and long form here, likely part of the class.
     def CleanDatabaseContainers(self):
-        container_list = ['MediaSingle', 'MediaEmbedded', 'MediaReference', 'MediaHybrid']
+        container_list = ['Single', 'Embedded', 'Reference', 'Hybrid']
         for container in container_list:
             try:
                 self.database.delete_container(container)
@@ -82,7 +83,7 @@ class cosmosClient:
                 self._process.outputMessage(f"Error: {e}", "error")
     
     def CreateDatabaseContainers(self):
-        container_list = ['MediaSingle', 'MediaEmbedded', 'MediaReference', 'MediaHybrid']
+        container_list = ['Single', 'Embedded', 'Reference', 'Hybrid']
         for container in container_list:
             try:
                 self.database.create_container(container, partition_key=PartitionKey(path="/title"))

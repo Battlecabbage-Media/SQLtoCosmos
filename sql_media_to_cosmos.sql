@@ -3,9 +3,15 @@ T-SQL for Stored Procedures to be used with the SQL media to Cosmos DB migration
 
 */
 
+/*
 -- Create schema for all of the stored procedures.
 CREATE SCHEMA [cosmos]
 GO
+
+-- Give read and execute permissions to the readonlyappuser
+GRANT SELECT ON SCHEMA :: cosmos TO readonlyappuser WITH GRANT OPTION;  
+GRANT EXECUTE ON SCHEMA :: cosmos TO readonlyappuser WITH GRANT OPTION;  
+*/
 
 /*
 --Cleanup Existing Stored Procedures
@@ -33,8 +39,9 @@ BEGIN
     FROM OPENJSON((
         SELECT
             m.external_id as id,
+            LOWER(m.title) as title,
+            m.title as original_title,
             'movie' as type,
-            m.title,
             m.tagline,
             m.description,
             m.mpaa_rating,
@@ -85,7 +92,9 @@ BEGIN
     FROM OPENJSON((
         SELECT
             CONCAT('mov',m.external_id,'act',actors.actor_id) as id,
-            actors.actor as title,
+            LOWER(actors.actor) as title,
+            actors.actor as original_title,
+            'person' as type,
             m.external_id as movie_id,
             m.title as movie_title,
             m.tagline,
@@ -93,7 +102,6 @@ BEGIN
             m.mpaa_rating,
             m.release_date,
             m.poster_url,
-            'actor' as type,
             (
                 SELECT 
                     genres.genre as name
@@ -141,7 +149,9 @@ BEGIN
     FROM OPENJSON((
         SELECT
             CONCAT('mov',m.external_id,'dir',directors.director_id) as id,
-            directors.director as title,
+            LOWER(directors.director) as title,
+            directors.director as original_title,
+            'person' as type,
             m.external_id as movie_id,
             m.title as movie_title,
             m.tagline,
@@ -149,7 +159,6 @@ BEGIN
             m.mpaa_rating,
             m.release_date,
             m.poster_url,
-            'director' as type,
             (
                 SELECT 
                     genres.genre as name
@@ -196,13 +205,14 @@ BEGIN
     FROM OPENJSON((
         SELECT
             CONCAT('mov',m.external_id,'act',actors.actor_id) as id,
-            actors.actor as title,
+            LOWER(actors.actor) as title,
+            actors.actor as original_title,
+            'person' as type,
             m.external_id as movie_id,
             m.title as movie_title,
             m.mpaa_rating,
             m.release_date,
-            m.poster_url,
-            'actor' as type
+            m.poster_url
         FROM
             movies as m
         INNER JOIN  actorstomoviesjoin ma ON m.movie_id = ma.movie_id
@@ -223,13 +233,14 @@ BEGIN
     FROM OPENJSON((
         SELECT
             CONCAT('mov',m.external_id,'dir',directors.director_id) as id,
+            LOWER(directors.director) as title,
+            directors.director as original_title,
+            'person' as type,
             m.external_id as movie_id,
-            directors.director as title,
             m.title as movie_title,
             m.mpaa_rating,
             m.release_date,
-            m.poster_url,
-            'director' as type
+            m.poster_url
         FROM
             movies as m
         INNER JOIN  directorstomoviesjoin md ON m.movie_id = md.movie_id
@@ -250,7 +261,8 @@ BEGIN
     FROM OPENJSON((
         SELECT
             CONCAT('act',a.actor_id) as id,
-            a.actor as title,
+            LOWER(a.actor) as title,
+            a.actor as original_title,
             'person' as type,
             (
                 SELECT 
@@ -282,7 +294,8 @@ BEGIN
     FROM OPENJSON((
         SELECT
             CONCAT('dir',d.director_id) as id,
-            d.director as title,
+            LOWER(d.director) as title,
+            d.director as original_title,
             'person' as type,
             (
                 SELECT 
