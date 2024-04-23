@@ -11,8 +11,7 @@ GO
 -- Give read and execute permissions to the readonlyappuser
 GRANT SELECT ON SCHEMA :: cosmos TO readonlyappuser WITH GRANT OPTION;  
 GRANT EXECUTE ON SCHEMA :: cosmos TO readonlyappuser WITH GRANT OPTION;  
-
-/*
+*/
 
 /*
 --Cleanup Existing Stored Procedures
@@ -40,7 +39,8 @@ BEGIN
     FROM OPENJSON((
         SELECT
             m.external_id as id,
-            m.title,
+            LOWER(m.title) as title,
+            m.title as original_title,
             'movie' as type,
             m.tagline,
             m.description,
@@ -92,8 +92,9 @@ BEGIN
     FROM OPENJSON((
         SELECT
             CONCAT('mov',m.external_id,'act',actors.actor_id) as id,
-            actors.actor as title,
-            'actor' as type,
+            LOWER(actors.actor) as title,
+            actors.actor as original_title,
+            'person' as type,
             m.external_id as movie_id,
             m.title as movie_title,
             m.tagline,
@@ -148,8 +149,9 @@ BEGIN
     FROM OPENJSON((
         SELECT
             CONCAT('mov',m.external_id,'dir',directors.director_id) as id,
-            directors.director as title,
-            'director' as type,
+            LOWER(directors.director) as title,
+            directors.director as original_title,
+            'person' as type,
             m.external_id as movie_id,
             m.title as movie_title,
             m.tagline,
@@ -203,8 +205,9 @@ BEGIN
     FROM OPENJSON((
         SELECT
             CONCAT('mov',m.external_id,'act',actors.actor_id) as id,
-            actors.actor as title,
-            'actor' as type,
+            LOWER(actors.actor) as title,
+            actors.actor as original_title,
+            'person' as type,
             m.external_id as movie_id,
             m.title as movie_title,
             m.mpaa_rating,
@@ -230,8 +233,9 @@ BEGIN
     FROM OPENJSON((
         SELECT
             CONCAT('mov',m.external_id,'dir',directors.director_id) as id,
-            directors.director as title,
-            'director' as type,
+            LOWER(directors.director) as title,
+            directors.director as original_title,
+            'person' as type,
             m.external_id as movie_id,
             m.title as movie_title,
             m.mpaa_rating,
@@ -257,7 +261,8 @@ BEGIN
     FROM OPENJSON((
         SELECT
             CONCAT('act',a.actor_id) as id,
-            a.actor as title,
+            LOWER(a.actor) as title,
+            a.actor as original_title,
             'person' as type,
             (
                 SELECT 
@@ -289,7 +294,8 @@ BEGIN
     FROM OPENJSON((
         SELECT
             CONCAT('dir',d.director_id) as id,
-            d.director as title,
+            LOWER(d.director) as title,
+            d.director as original_title,
             'person' as type,
             (
                 SELECT 
